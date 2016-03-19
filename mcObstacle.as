@@ -16,6 +16,11 @@
 			this.x += 5;
 		}
 		
+		public function removeObstacle() {
+			parent.removeChild(this);
+			removeEventListener(Event.ENTER_FRAME, loopObstacle);
+		}
+		
 		/* The randomRange function */ 
 		function randomRange(minNum:Number, maxNum:Number):Number {
 			return (Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum);

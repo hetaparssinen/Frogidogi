@@ -8,28 +8,42 @@
 	
 	public class Frogidogi extends MovieClip {
 		
-		var obstacles:Array = new Array();
+		var obstacles:Array;
 
 		public function Frogidogi() {
 			
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			obstacles = new Array();
 			
-			for (var x:Number = 0; x < 6; x++) {
-				//var obstacle:MovieClip = new mcObstacle();
-				//obstacles.push(obstacle);
-			}
-			//trace(obstacles.length);
+			addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+			addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			
+			addEventListener(Event.ENTER_FRAME, gameLoop);
 
 			var timer:Timer = new Timer(3000);
 			timer.addEventListener(TimerEvent.TIMER, addObstacle);
 			timer.start();
 		}
+
+		function gameLoop(event:Event) {
+			obstacleOffScreen();
+		}
 		
 		function addObstacle(event:TimerEvent) {
 			trace("Timer");
 			var obstacle:MovieClip = new mcObstacle();
+			obstacles.push(obstacle);
+			trace(obstacles.length);
 			addChild(obstacle);
+		}
+		
+		function obstacleOffScreen() {
+			for (var i:Number = 0; i < obstacles.length; i++){
+				if (obstacles[i].x > (stage.stageWidth + obstacles[i].width / 2)) {
+					// Remove obstacle from array and stage
+					obstacles[i].removeObstacle();
+					obstacles.splice(i, 1);
+				}
+			}
 		}
 		
 		function keyDown(event:KeyboardEvent) {
