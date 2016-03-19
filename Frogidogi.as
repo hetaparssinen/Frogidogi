@@ -9,16 +9,20 @@
 	public class Frogidogi extends MovieClip {
 		
 		var obstacles:Array;
-		var keyCode:Number;
+		var keyCode:Number = 0;
+		var player:mcCharacter;
 
 		public function Frogidogi() {
 			
 			obstacles = new Array();
 			
+			player = new mcCharacter();
+			addChild(player);
+			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 			
-			addEventListener(Event.ENTER_FRAME, gameLoop);
+			stage.addEventListener(Event.ENTER_FRAME, gameLoop);
 
 			var timer:Timer = new Timer(3000);
 			timer.addEventListener(TimerEvent.TIMER, addObstacle);
@@ -28,39 +32,26 @@
 		function gameLoop(event:Event) {
 			checkKeyboard();
 			checkObstacleHit();
-			obstacleOffScreen();
+			checkObstacleOffScreen();
 		}
 		
 		function checkKeyboard() {
-			// Arrow key left
-			if (keyCode == 37) {
-				if (mcPlayer.x - 5 >= 0) {
-					mcPlayer.x -= 5;
-				}
-			// Arrow key up
-			} else if (keyCode == 38) {
-				if (mcPlayer.y - 5 >= 0) {
-					mcPlayer.y -= 5;
-				}
-			// Arrow key right
-			} else if (keyCode == 39) {
-				// fix this later
-				if (mcPlayer.x + 5 <= stage.stageWidth) {
-					mcPlayer.x += 5;
-				}
-			// Arrow key down
-			} else if (keyCode == 40) {
-				// fix this later
-				if (mcPlayer.y + 5 <= stage.stageHeight) {
-					mcPlayer.y += 5;
-				}
-			}
+			player.movePlayer(keyCode);
 		}
 		
 		function checkObstacleHit() {
+			var hitted:Boolean = false;
 			for (var i:Number = 0; i < obstacles.length; i++) {
-				if (mcPlayer.hitTestObject(obstacles[i])) {
-					trace("HIIIIT");
+				if (player.hitTestObject(obstacles[i])) {
+					hitted = true;
+					var hittedObs = obstacles[i];
+					player.hit(keyCode);
+					player.decreaseHealth();
+					if (player.getHealth() == 0) {
+						trace("END!!!");
+					}
+				} else {
+					player.hit(0);
 				}
 			}
 		}
@@ -73,7 +64,7 @@
 			addChild(obstacle);
 		}
 		
-		function obstacleOffScreen() {
+		function checkObstacleOffScreen() {
 			for (var i:Number = 0; i < obstacles.length; i++){
 				if (obstacles[i].x > (stage.stageWidth + obstacles[i].width / 2)) {
 					// Remove obstacle from array and stage
