@@ -9,13 +9,14 @@
 	public class Frogidogi extends MovieClip {
 		
 		var obstacles:Array;
+		var keyCode:Number;
 
 		public function Frogidogi() {
 			
 			obstacles = new Array();
 			
-			addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			addEventListener(KeyboardEvent.KEY_UP, keyUp);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
 			
 			addEventListener(Event.ENTER_FRAME, gameLoop);
 
@@ -25,7 +26,43 @@
 		}
 
 		function gameLoop(event:Event) {
+			checkKeyboard();
+			checkObstacleHit();
 			obstacleOffScreen();
+		}
+		
+		function checkKeyboard() {
+			// Arrow key left
+			if (keyCode == 37) {
+				if (mcPlayer.x - 5 >= 0) {
+					mcPlayer.x -= 5;
+				}
+			// Arrow key up
+			} else if (keyCode == 38) {
+				if (mcPlayer.y - 5 >= 0) {
+					mcPlayer.y -= 5;
+				}
+			// Arrow key right
+			} else if (keyCode == 39) {
+				// fix this later
+				if (mcPlayer.x + 5 <= stage.stageWidth) {
+					mcPlayer.x += 5;
+				}
+			// Arrow key down
+			} else if (keyCode == 40) {
+				// fix this later
+				if (mcPlayer.y + 5 <= stage.stageHeight) {
+					mcPlayer.y += 5;
+				}
+			}
+		}
+		
+		function checkObstacleHit() {
+			for (var i:Number = 0; i < obstacles.length; i++) {
+				if (mcPlayer.hitTestObject(obstacles[i])) {
+					trace("HIIIIT");
+				}
+			}
 		}
 		
 		function addObstacle(event:TimerEvent) {
@@ -47,36 +84,10 @@
 		}
 		
 		function keyDown(event:KeyboardEvent) {
-			// Arrow key left
-			if (event.keyCode == 37) {
-				if (mcPlayer.x - 5 >= 0) {
-					mcPlayer.x -= 5;
-				}
-			// Arrow key up
-			} else if (event.keyCode == 38) {
-				if (mcPlayer.y - 5 >= 0) {
-					mcPlayer.y -= 5;
-				}
-			// Arrow key right
-			} else if (event.keyCode == 39) {
-				// fix this later
-				if (mcPlayer.x + 5 <= stage.stageWidth) {
-					mcPlayer.x += 5;
-				}
-			// Arrow key down
-			} else if (event.keyCode == 40) {
-				// fix this later
-				if (mcPlayer.y + 5 <= stage.stageHeight) {
-					mcPlayer.y += 5;
-				}
-			}
+			keyCode = event.keyCode;
 		}
 
 		function keyUp(event:KeyboardEvent) {
-			
-		}
-		
-		function initialize(event:Event) {
 			
 		}
 		
