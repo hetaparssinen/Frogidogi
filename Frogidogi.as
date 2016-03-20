@@ -11,6 +11,10 @@
 		var obstacles:Array;
 		var keyCode:Number = 0;
 		var player:mcCharacter;
+		public var hitted:Boolean = false;
+		var hittedObs:mcObstacle;
+		
+		var timerHitted:Timer;
 
 		public function Frogidogi() {
 			
@@ -27,6 +31,9 @@
 			var timer:Timer = new Timer(3000);
 			timer.addEventListener(TimerEvent.TIMER, addObstacle);
 			timer.start();
+			
+			timerHitted = new Timer(1000);
+			timerHitted.addEventListener(TimerEvent.TIMER, releaseHit);
 		}
 
 		function gameLoop(event:Event) {
@@ -40,20 +47,41 @@
 		}
 		
 		function checkObstacleHit() {
-			var hitted:Boolean = false;
-			for (var i:Number = 0; i < obstacles.length; i++) {
-				if (player.hitTestObject(obstacles[i])) {
-					hitted = true;
-					var hittedObs = obstacles[i];
-					player.hit(keyCode);
-					player.decreaseHealth();
-					if (player.getHealth() == 0) {
-						trace("END!!!");
+			if (!hitted) {
+				for (var i:Number = 0; i < obstacles.length; i++) {
+					if (player.hitTestObject(obstacles[i])) {
+						hitted = true;
+						timerHitted.start();
+						hittedObs = obstacles[i];
+						player.decreaseHealth();
+						if (player.getHealth() == 0) {
+							trace("END!!!");
+						}
 					}
-				} else {
-					player.hit(0);
 				}
+			} else {
+				if (player.x >= hittedObs.x + hittedObs.width / 2) {
+					player.x = hittedObs.x + hittedObs.width / 2 + player.width / 2;
+				} else if (player.y + player.height/2 >= hittedObs.y + hittedObs.height/2) {
+					player.y = hittedObs.y + hittedObs.height/2 + player.height/2 + 1;
+				}			
 			}
+		}
+		
+		function releaseHit(event:TimerEvent) {
+			if (player.x >= hittedObs.x + hittedObs.width / 2) {
+				player.x = hittedObs.x;
+				player.y = hittedObs.y + hittedObs.height/2 + player.height/2 + 1;
+			} else if (player.y >= hittedObs.y + hittedObs.height/2 + player.height/2) {
+				trace("allaaaaa");
+				player.y = hittedObs.y + hittedObs.height/2 + player.height/2 + 1;
+			}
+			hitted = false;
+			stopTimer();
+		}
+		
+		function stopTimer() {
+			timerHitted.stop();
 		}
 		
 		function addObstacle(event:TimerEvent) {

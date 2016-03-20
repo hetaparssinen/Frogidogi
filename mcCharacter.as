@@ -6,7 +6,6 @@
 		var stageHeight:Number;
 		var stageWidth:Number;
 		var health:Number;
-		var prevent:Number = 0;
 		var hitting:Boolean;
 
 		public function mcCharacter() {
@@ -31,30 +30,24 @@
 			return this.health;
 		}
 		
-		public function hit(code:Number) {
-			this.prevent = code;
-		}
-		
 		public function movePlayer(keyCode:Number) {
 			// Arrow key left
-			if (keyCode == 37 && prevent != 37) {
+			if (keyCode == 37) {
 				if (this.x - 5 >= this.width / 2) {
 					this.x -= 5;
 				}
 			// Arrow key up
-			} else if (keyCode == 38 && prevent != 38) {
+			} else if (keyCode == 38) {
 				if (this.y - 5 >= this.height / 2) {
 					this.y -= 5;
 				}
 			// Arrow key right
-			} else if (keyCode == 39 && prevent != 39) {
-				// fix this later
+			} else if (keyCode == 39) {
 				if (this.x + 5 <= stageWidth - this.width / 2) {
 					this.x += 5;
 				}
 			// Arrow key down
-			} else if (keyCode == 40 && prevent != 40) {
-				// fix this later
+			} else if (keyCode == 40) {
 				if (this.y + 5 <= stageHeight - this.height / 2) {
 					this.y += 5;
 				}
