@@ -14,6 +14,7 @@
 		var player:mcCharacter;
 		public var hitted:Boolean = false;
 		var hittedObs:mcObstacle;
+		var pressed:Boolean = false;
 		
 		var firstRowY = 80;
 		var secondRowY = 180;
@@ -47,8 +48,8 @@
 			thiTimer.addEventListener(TimerEvent.TIMER, addThirdRow);
 			thiTimer.start();
 			
-			timerHitted = new Timer(1000);
-			timerHitted.addEventListener(TimerEvent.TIMER, releaseHit);
+			//timerHitted = new Timer(1000);
+			//timerHitted.addEventListener(TimerEvent.TIMER, releaseHit);
 		}
 
 		function gameLoop(event:Event) {
@@ -68,11 +69,14 @@
 					if (player.hitTestObject(obstacles[i])) {
 						trace("HIT");
 						hitted = true;
-						timerHitted.start();
+						//timerHitted.start();
 						hittedObs = obstacles[i];
 						player.decreaseHealth();
 						if (player.getHealth() == 0) {
-							trace("END!!!");
+							mcLostScreen.x = stage.stageWidth / 2;
+							mcLostScreen.y = stage.stageHeight / 2;
+							addChild(mcLostScreen);
+							player.preventMoving();
 						}
 					}
 				}
@@ -87,10 +91,16 @@
 		
 		function checkFinish() {
 			if (player.hitTestObject(mcGoal)) {
-				trace("WIN!!!");
+				mcWinScreen.x = stage.stageWidth / 2;
+				mcWinScreen.y = stage.stageHeight / 2;
+				addChild(mcWinScreen);
+				for (var i:Number = 0; i < obstacles.length; i++) {
+					obstacles[i].stopObstacle();
+				}
 			}
 		}
 		
+		/*
 		function releaseHit(event:TimerEvent) {
 			if (player.x >= hittedObs.x + hittedObs.width / 2) {
 				player.x = hittedObs.x;
@@ -102,6 +112,7 @@
 			hitted = false;
 			stopTimer();
 		}
+		*/
 		
 		function stopTimer() {
 			timerHitted.stop();
@@ -140,6 +151,7 @@
 		}
 		
 		function keyDown(event:KeyboardEvent) {
+			hitted = false;
 			keyCode = event.keyCode;
 		}
 

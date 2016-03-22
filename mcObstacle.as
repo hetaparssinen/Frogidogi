@@ -16,6 +16,10 @@
 			this.x += 5;
 		}
 		
+		function stopObstacle() {
+			removeEventListener(Event.ENTER_FRAME, loopObstacle);
+		}
+		
 		public function removeObstacle() {
 			parent.removeChild(this);
 			removeEventListener(Event.ENTER_FRAME, loopObstacle);
