@@ -167,15 +167,15 @@
 					if (i == 0) {
 						addObstacle(firstRowY, stage.stageWidth - 70);
 						addObstacle(firstRowY, stage.stageWidth - 370);
-						addObstacle(firstRowY, -100);
+						addObstacle(firstRowY, -150);
 					} else if (i == 1) {
 						addObstacle(secondRowY, stage.stageWidth - 170);
 						addObstacle(secondRowY, stage.stageWidth - 470);
-						addObstacle(secondRowY, -100);
+						addObstacle(secondRowY, -150);
 					} else {
 						addObstacle(thirdRowY, stage.stageWidth - 100);
 						addObstacle(thirdRowY, stage.stageWidth - 400);
-						addObstacle(thirdRowY, -100);
+						addObstacle(thirdRowY, -150);
 					}
 			}
 		}
