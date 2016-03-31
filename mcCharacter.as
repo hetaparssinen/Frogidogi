@@ -15,8 +15,6 @@
 		}
 		
 		private function onAddedToStage(event:Event) {
-			//this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			trace(this.stage);
 			stageHeight = this.stage.stageHeight;
 			stageWidth = this.stage.stageWidth;
 			this.x = stageWidth / 2;

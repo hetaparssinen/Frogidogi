@@ -16,6 +16,7 @@
 		var hittedObs:mcObstacle;
 		var pressed:Boolean = false;
 		
+		// Obstacle-rows y values
 		var firstRowY = 80;
 		var secondRowY = 180;
 		var thirdRowY = 285;
@@ -32,10 +33,9 @@
 			addChild(player);
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, keyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
-			
 			stage.addEventListener(Event.ENTER_FRAME, gameLoop);
 			
+			// Timers for adding more obstacles
 			var timer:Timer = new Timer(3000);
 			timer.addEventListener(TimerEvent.TIMER, addFirstRow);
 			timer.start();
@@ -47,11 +47,9 @@
 			var thiTimer:Timer = new Timer(3000);
 			thiTimer.addEventListener(TimerEvent.TIMER, addThirdRow);
 			thiTimer.start();
-			
-			//timerHitted = new Timer(1000);
-			//timerHitted.addEventListener(TimerEvent.TIMER, releaseHit);
 		}
 
+		// Basic game loop		
 		function gameLoop(event:Event) {
 			checkKeyboard();
 			checkObstacleHit();
@@ -63,13 +61,12 @@
 			player.movePlayer(keyCode);
 		}
 		
+		// Check if character hits an obstacle
 		function checkObstacleHit() {
 			if (!hitted) {
 				for (var i:Number = 0; i < obstacles.length; i++) {
 					if (player.hitTestObject(obstacles[i])) {
-						trace("HIT");
 						hitted = true;
-						//timerHitted.start();
 						hittedObs = obstacles[i];
 						player.decreaseHealth();
 						if (player.getHealth() == 0) {
@@ -89,6 +86,7 @@
 			}
 		}
 		
+		// Check if charachter hits the goal
 		function checkFinish() {
 			if (player.hitTestObject(mcGoal)) {
 				mcWinScreen.x = stage.stageWidth / 2;
@@ -99,20 +97,6 @@
 				}
 			}
 		}
-		
-		/*
-		function releaseHit(event:TimerEvent) {
-			if (player.x >= hittedObs.x + hittedObs.width / 2) {
-				player.x = hittedObs.x;
-				player.y = hittedObs.y + hittedObs.height/2 + player.height/2 + 1;
-			} else if (player.y >= hittedObs.y + hittedObs.height/2 + player.height/2) {
-				trace("allaaaaa");
-				player.y = hittedObs.y + hittedObs.height/2 + player.height/2 + 1;
-			}
-			hitted = false;
-			stopTimer();
-		}
-		*/
 		
 		function stopTimer() {
 			timerHitted.stop();
@@ -130,6 +114,7 @@
 			addObstacle(thirdRowY);
 		}
 		
+		// Add obstacle to the screen
 		function addObstacle(y:Number, x:Number=-1) {
 			var obstacle:MovieClip = new mcObstacle();
 			obstacles.push(obstacle);
@@ -154,11 +139,8 @@
 			hitted = false;
 			keyCode = event.keyCode;
 		}
-
-		function keyUp(event:KeyboardEvent) {
-			
-		}
 		
+		// Initialize, add goal and obstacles to the screen
 		function initialize() {
 			mcGoal.y = 0;
 			mcGoal.x = stage.stageWidth / 2;

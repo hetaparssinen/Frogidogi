@@ -5,9 +5,9 @@
 	public class mcObstacle extends MovieClip {
 
 		public function mcObstacle() {
+			// Pick on of the four different movie clips
 			this.gotoAndStop(randomRange(0, 4));
 			this.x = -(this.width / 2);
-			//this.x = 50;
 			this.y = 150;
 			addEventListener(Event.ENTER_FRAME, loopObstacle);
 		}
